@@ -1,0 +1,17 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: home-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.1.200-192.168.1.250 # [중요] 사용자의 공유기 및 네트워크 환경에 맞게 수정 필수
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2-adv
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - home-pool

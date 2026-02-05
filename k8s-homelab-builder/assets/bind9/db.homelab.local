@@ -1,0 +1,11 @@
+$TTL 604800
+@       IN      SOA     homelab.local. root.homelab.local. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      ns.homelab.local.
+@       IN      A       192.168.1.53  ; DNS 서버 자신의 IP
+ns      IN      A       192.168.1.53

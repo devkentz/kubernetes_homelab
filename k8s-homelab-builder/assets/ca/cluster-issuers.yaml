@@ -1,0 +1,33 @@
+# 1. 임시 Self-Signed ClusterIssuer 생성
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+spec:
+  selfSigned: {}
+---
+# 2. 실제 사용할 Root CA 인증서 생성 (Secret으로 저장됨)
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: homelab-ca
+  namespace: cert-manager
+spec:
+  isCA: true
+  commonName: "Homelab Root CA"
+  secretName: homelab-ca-secret # 이 Secret에 ca.crt, tls.key가 저장됨
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+---
+# 3. 위에서 생성된 Secret을 사용하는 내부 전용 CA ClusterIssuer 생성
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: internal-ca-issuer
+spec:
+  ca:
+    secretName: homelab-ca-secret
